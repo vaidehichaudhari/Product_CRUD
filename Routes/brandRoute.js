@@ -1,11 +1,13 @@
-const express = require('express')
-const brandController = require('../controllers/brandController')
-const router = express.Router()
+const express = require('express');
+const brandController = require('../controllers/brandController');
+const router = express.Router();
 
-router.post('/addBrand',brandController.addBrand)
-router.post('/getAllBrand',brandController.getAllBrand)
-router.post('/getProductByBrandID/:ID',brandController.getProductByBrandID)
-router.post('/updateBrand',brandController.updateBrand)
-router.post('/deleteBrand',brandController.deleteBrand)
+// Make sure each handler exists in brandController!
+router.post('/addBrand', brandController.addBrand);
+router.get('/', brandController.getAllBrand);                                                           
+router.get('/getProductByBrandID/:ID', brandController.getProductByBrandID);
+router.put('/updateBrand', brandController.updateBrand);
+router.delete('/deleteBrand', brandController.deleteBrand);
+router.post('/addCategory', brandController.addCategory);
 
-module.exports = router
+module.exports = router;

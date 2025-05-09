@@ -1,41 +1,44 @@
-const categories = require("../data/categories")
+const { categories, categoryId } = require("../data/categories");
 
-const getAllCategories = (req,res) => {
-    res.status(200).send({categories:categories, success:true})
-}
+let currentCategoryId = categoryId;
 
-const getProductsByCategoryID = (req,res) => {
-    cat_ID = req.params.ID
-    const cat_index = categories.findIndex(c => c.id == cat_ID)
+exports.createCategory = (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ message: "Category name is required!" });
 
-if(cat_index == -1){
-    res.status(400).send({message:"Category not found"})
-}else{
-    const filteredProdByCat = products.filter(p=>p.category_Id == cat_ID);
-    if(filteredProdByCat.length > 0){
-    res.status(200).send({filteredProdByCat:filteredProdByCat, success:true})
-    }else{
-    res.status(200).send({message:"Products are not available"})
+  const newCategory = {
+    id: currentCategoryId++,
+    name,
+  };
 
-    }
-}
-}
-const addCategory = (req,res) => {
-    newCat = {
-        id:Date.now(),
-        name:req.body.name
-    }
-    categories.push(newCat)
-    res.send({message:"Category added successfully",success:true})
-}
+  categories.push(newCategory);
+  res.status(201).json(newCategory);
+};
 
-function deleteCategory(){}
-function updateCategory(){}
+exports.getCategories = (req, res) => {
+  res.json(categories);
+};
 
-module.exports = {
-    addCategory,
-    getAllCategories,
-    getProductsByCategoryID,
-    updateCategory,
-    deleteCategory
-}
+exports.getCategoryById = (req, res) => {
+  const category = categories.find(cat => cat.id == parseInt(req.params.id));
+  if (!category) return res.status(404).json({ message: "Category not found!" });
+  res.json(category);
+};
+
+exports.updateCategory = (req, res) => {
+  const category = categories.find(cat => cat.id == parseInt(req.params.id));
+  if (!category) return res.status(404).json({ message: "Category not found!" });
+
+  const { name } = req.body;
+  if (name) category.name = name;
+
+  res.json(category);
+};
+
+exports.deleteCategory = (req, res) => {
+  const index = categories.findIndex(cat => cat.id == parseInt(req.params.id));
+  if (index === -1) return res.status(404).json({ message: "Category not found!" });
+
+  categories.splice(index, 1);
+  res.json({ message: "Category deleted successfully" });
+};

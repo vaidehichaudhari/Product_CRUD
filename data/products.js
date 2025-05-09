@@ -1,4 +1,21 @@
-const products = [{id:1, name:"iPhone15", category_Id:101,price:200000,inStock:true},
-    {id:2, name:"iPhone16 Pro", category_Id:101,price:300200,inStock:true},
-]
-module.exports = products;
+let products = [
+    {
+        id: 1,
+        name: "bat",
+        price: 12345,
+        description: "hello",
+        categoryID: "abcgd"
+      },
+      {
+        id: 2,
+        name: "ball",
+        price: 123,
+        description: "bye",
+        categoryID: "abcdd"
+      },
+
+
+];
+let productId =1;
+
+module.exports = {products,productId};
